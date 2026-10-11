@@ -1,0 +1,37 @@
+'use client';
+import Link from 'next/link';
+import { ArrowDown, ArrowRight, ArrowUpRight, Leaf, MoveUpRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { useShop } from '@/context/ShopContext';
+import { STARTER_PRODUCTS } from '@/data/products';
+import { formatLKR } from '@/lib/format';
+import ProductCard from '@/components/ProductCard';
+import Jar3D from '@/components/Jar3D';
+import Aurora from '@/components/animations/Aurora';
+import TextLoop from '@/components/animations/TextLoop';
+import CircularCarousel from '@/components/animations/CircularCarousel';
+import BellToggle from '@/components/animations/BellToggle';
+import PeekRating from '@/components/animations/PeekRating';
+import { useState } from 'react';
+
+const carousel = STARTER_PRODUCTS.map(product=>({src:product.image, alt:`${product.name} illustrated packaging`,title:product.name,subtitle:'The collection'}));
+export default function HomePage() {
+ const { products, addToCart }=useShop();const featured=products.filter(p=>p.enabled).slice(0,4);const hero=featured[0]||STARTER_PRODUCTS[0];
+ const [rated,setRated]=useState(0);const [notify,setNotify]=useState(false);
+ return <>
+  <section className="hero" aria-labelledby="hero-title">
+   <div className="hero-aurora"><Aurora colorStops={['#7cff67','#B497CF','#5227FF']} blend={.5} amplitude={1} speed={.6}/></div>
+   <div className="hero-grid-wrap"><div className="hero-copy"><div className="hero-kicker"><span className="kicker-line"/> A NEW KIND OF PANTRY RITUAL</div><h1 id="hero-title">A little<br/><em>sunshine,</em><br/>by the spoonful.</h1><p>Something lovely is taking shape. Meet the everyday jar, thoughtfully reimagined for the moments that matter.</p><div className="hero-buttons"><Link href="/shop" className="btn btn-cream">Discover the collection <ArrowUpRight size={17}/></Link><Link href="#story" className="hero-link">Explore our story <ArrowDown size={15}/></Link></div><div className="hero-side-note"><span className="hero-side-star">✳</span> THE SMALL DETAILS MAKE<br/>EVERYDAY MOMENTS GOLDEN.</div></div>
+   <div className="hero-product"><div className="hero-ring hero-ring-1"/><div className="hero-ring hero-ring-2"/><span className="hero-orbit-copy">A LITTLE EVERYDAY MAGIC</span><Jar3D product={hero}/><div className="hero-product-caption"><span>01 — THE SIGNATURE JAR</span><strong>{hero.name}</strong><span>{formatLKR(hero.price)} <i>DEMO PRICE</i></span></div></div></div>
+   <div className="hero-bottom"><span>DESIGNED TO MAKE THE ORDINARY FEEL EXTRAORDINARY</span><span>SCROLL TO EXPLORE <ArrowDown size={13}/></span></div>
+  </section>
+  <div className="trust-strip"><span>THE THOUGHTFUL PANTRY</span><i>✳</i><span>BEAUTIFUL EVERYDAY RITUALS</span><i>✳</i><span>SMALL DETAILS. BIG FEELING.</span><i>✳</i><span>A CONCEPT BY HEAVIES</span></div>
+  <section id="collection" className="collection section-pad"><div className="section-heading"><div><span className="overline green">01 / THE COLLECTION</span><h2>Meet your new<br/><em>morning favorites.</em></h2></div><div className="section-heading-aside"><p>Four beautifully simple flavor concepts, each with its own little personality. Discover the one that speaks to you.</p><Link href="/shop" className="underline-link">Shop all flavors <ArrowUpRight size={15}/></Link></div></div><div className="products-grid">{featured.map((product,index)=><ProductCard product={product} index={index} key={product.id}/>)}</div><p className="sample-disclaimer">Sample product names, ingredients and prices are illustrative, pending client approval.</p></section>
+  <section className="story-block" id="story"><div className="story-image"><img src="/assets/story-harvest.svg" alt="Illustrated pumpkin at harvest"/><span className="story-picture-caption">AN IDEA ROOTED IN EVERYDAY BEAUTY</span></div><div className="story-text"><span className="overline">02 / THE PHILOSOPHY</span><h2>From simple<br/>beginnings,<br/><em>beautiful things.</em></h2><p>We believe thoughtful design transforms even the simplest everyday choices. A warm kitchen, a quiet morning, a well-made jar — a little extra care goes a long way.</p><p className="story-extra">This story is illustrative brand copy and will be replaced with the client's approved business story.</p><Link href="/shop" className="underline-link light">Discover the collection <ArrowUpRight size={16}/></Link><div className="story-accent">✳</div></div></section>
+  <section id="ritual" className="ritual-section"><div className="ritual-intro"><span className="overline green">03 / THE EVERYDAY RITUAL</span><h2>A little joy,<br/><em>however you take it.</em></h2><p>Breakfast, an afternoon pause, or a moment to make something ordinary feel special.</p></div><div className="ritual-cards"><article><span>01</span><div className="ritual-icon"><span>☀</span></div><h3>Slow mornings.</h3><p>Make a little room for the simple things.</p></article><article><span>02</span><div className="ritual-icon"><span>✳</span></div><h3>Good company.</h3><p>Better moments are meant to be shared.</p></article><article><span>03</span><div className="ritual-icon"><span>◒</span></div><h3>Everyday magic.</h3><p>Small rituals deserve a little golden touch.</p></article></div></section>
+  <section className="carousel-section"><div className="carousel-heading"><span className="overline">04 / A CLOSER LOOK</span><h2>Every angle<br/><em>has a story.</em></h2><p>Drag, swipe or use your arrow keys to explore our packaging concepts.</p></div><div className="carousel-container"><CircularCarousel items={carousel} preset="cylinder" intro="rise" cardWidth={230} aspectRatio={.9} gap={30} speed={9} autoplay="drift" direction="left" draggable snap pauseOnHover focusOnClick captions depthFade={.45} fadeColor="#112e22" innerShade={.75} cornerRadius={9}/></div><div className="carousel-foot">EXPLORE THE PACKAGING CONCEPTS <ArrowRight size={16}/></div></section>
+  <section className="notify-section"><div className="notify-decoration">✳</div><div className="notify-content"><span className="overline">NOTHING GOOD HAPPENS IN A HURRY</span><h2>Good things<br/><em>are on their way.</em></h2><p>Consider this your first look at what we're dreaming up.</p><BellToggle offLabel="Remind me (demo)" onLabel="Demo reminder selected" onChange={setNotify}/><div className="notify-note">{notify?'Preference selected on this page only. No reminder will be sent.':'Interactive preview only — no email or notification is collected.'}</div></div></section>
+  <div className="marquee-area"><TextLoop text="EVERYDAY GOODNESS  ·  THE THOUGHTFUL PANTRY" ribbonColor="#c87544" color="#fff6e7" speed={66}/></div>
+  <section className="feedback-section"><span className="overline green">YOUR FIRST IMPRESSION</span><h2>What do you think<br/><em>of this concept?</em></h2><p>Try our interactive rating widget. This is not a public review and nothing is submitted.</p><div className="feedback-rating"><PeekRating value={rated} onChange={setRated} labels={['Not for me','Needs work','Nice','Love it','Exceptional']} activeColor="#c77b40" idleColor="#c5c3b6" size={36} lift={9} popScale={1.2}/></div><span className="feedback-result">{rated?`Your local preview rating: ${rated} / 5`:'Tap a star to rate this design preview'}</span></section>
+  <div className="feature-ribbon"><div><Leaf size={24}/><span>DESIGNED WITH INTENTION</span></div><div><Sparkles size={23}/><span>CRAFTED FOR EVERYDAY JOY</span></div><div><ShieldCheck size={23}/><span>TRANSPARENT DEMO EXPERIENCE</span></div></div>
+ </>;
+}
